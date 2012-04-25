@@ -60,6 +60,7 @@ public class TowerFire extends Tower {
 
 	@Override
 	protected void attack(Creature creature) {
+		creature.damaged(damage, owner);
 		game.addAnimation(new Fireball(game,this,creature,damage,RADIUS));
 	}
 

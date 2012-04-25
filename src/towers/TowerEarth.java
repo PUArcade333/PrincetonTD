@@ -60,6 +60,7 @@ public class TowerEarth extends Tower {
 
 	@Override
 	protected void attack(Creature creature) {
+		creature.damaged(damage, owner);
 		game.addAnimation(new Rock(game,this,creature,damage,RADIUS));
 	}
 

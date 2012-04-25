@@ -61,6 +61,7 @@ public class TowerCanon extends Tower {
 	@Override
 	protected void attack(Creature creature) {
 		angle = Math.PI/2+Math.atan2(creature.centerY() - centerY(), creature.centerX() - centerX());
+		creature.damaged(damage, owner);
         game.addAnimation(new Canonball(game,this,creature,damage,RADIUS));
 	}
 

@@ -56,11 +56,10 @@ public class CreatureWave {
         else
             type = "LAND";
 
-        return N + "x " +CREATURE_TYPE.getName() + " (<b>"
-                + type + "</b>) [ "
+        return N + "x " +CREATURE_TYPE.getName() + " ("
+                + type + ") - "
                 + "Health : " + CREATURE_TYPE.getHealthMax() + ", "
-                + "Drop : " + CREATURE_TYPE.getReward() + ", "
-                + "Speed : " + CREATURE_TYPE.getSpeed() + " ]";
+                + "Drop : " + CREATURE_TYPE.getReward();
     }
 
     public static final double SLOW = 30.0;
@@ -82,7 +81,7 @@ public class CreatureWave {
         int waveUnit = waveNumber % 10;
         
         final long HEALTH_NORMAL = fHealth(waveNumber);
-        final long WAVE_GAIN = fWaveGain2(waveNumber)/*fGainVague(HEALTH_NORMAL)*/;
+        final long WAVE_GAIN = fWaveGain2(waveNumber)/*fWaveGain(HEALTH_NORMAL)*/;
 
         switch (waveUnit)
         {

@@ -59,6 +59,7 @@ public class TowerAir extends Tower {
 
 	@Override
 	protected void attack(Creature creature) {
+		creature.damaged(damage, owner);
 		game.addAnimation(new Wind(game,this,creature,damage));
 	}
 

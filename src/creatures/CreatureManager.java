@@ -72,7 +72,7 @@ public class CreatureManager implements Runnable {
 				{
 					creature = eCreatures.nextElement();
 
-					creature.erase();
+					creature.erase();	// multi-player
 
 					if(creature.death())
 						deleteCreatures.add(creature);
@@ -236,17 +236,41 @@ public class CreatureManager implements Runnable {
 				{
 					public void run()
 					{
-						for (int i = 0; i < wave.getN() && game.isStarted(); i++)
+						
+						// recovery areas
+						// FIXME 
+
+						final Rect START_ZONE = targetTeam.getStartZone(randomStart(0, targetTeam.getNStartZones()-1));
+						final Rect END_ZONE = targetTeam.getEndZone();
+
+						int xStart = (int) START_ZONE.centerX();
+						int yStart = (int) START_ZONE.centerY();
+						
+						if (game.getMode() == Game.MODE_RANDOM)
 						{
 
-							// recovery areas
-							// FIXME 
+							xStart = randomStart(0, 
+									(int) START_ZONE.width()-MARGIN*2) + START_ZONE.left+MARGIN;
+							yStart = randomStart(0, 
+									(int) START_ZONE.height()-MARGIN*2) + START_ZONE.top+MARGIN;
+						}
+						
+						ArrayList<Point> newPath;
+						Creature c = wave.getCopy();
+						try
+						{
+							newPath = game.getMap().getShortestPath(xStart,
+									yStart, (int) END_ZONE.centerX(),
+									(int) END_ZONE.centerY(), c.getType());
+						}
+						catch (PathNotFoundException e1) 
+						{
+							newPath = null;
+						}
 
-							final Rect START_ZONE = targetTeam.getStartZone(randomStart(0, targetTeam.getNStartZones()-1));
-							final Rect END_ZONE = targetTeam.getEndZone();
-
-							int xStart = (int) START_ZONE.centerX();
-							int yStart = (int) START_ZONE.centerY();
+						
+						for (int i = 0; i < wave.getN() && game.isStarted(); i++)
+						{
 
 							// pause
 							try
@@ -264,34 +288,14 @@ public class CreatureManager implements Runnable {
 
 							if(game.isStarted())
 							{
-
-								if (game.getMode() == Game.MODE_RANDOM)
-								{
-
-									xStart = randomStart(0, 
-											(int) START_ZONE.width()-MARGIN*2) + START_ZONE.left+MARGIN;
-									yStart = randomStart(0, 
-											(int) START_ZONE.height()-MARGIN*2) + START_ZONE.top+MARGIN;
-								}
-
 								Creature creature = wave.getCopy();
 								creature.setX(xStart-creature.width()/2);
 								creature.setY(yStart-creature.height()/2);
 								creature.setOwner(launcher);
 								creature.setTargetTeam(targetTeam);
 								creature.addCreatureState(cs);
-
-								try
-								{    
-									creature.setPath(game.getMap().getShortestPath(xStart,
-											yStart, (int) END_ZONE.centerX(),
-											(int) END_ZONE.centerY(), creature.getType()));
-
-								}
-								catch (PathNotFoundException e1) 
-								{
-									// ?
-								}
+								
+								creature.setPath(newPath);
 
 								addCreature(creature);
 								game.addCreature(creature);

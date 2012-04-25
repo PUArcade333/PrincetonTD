@@ -121,7 +121,7 @@ public abstract class Game implements PlayerState, CreatureState, WaveState
 		isStarted           = false;
 		isFinished	        = false;
 		isDestroyed         = false;
-		currentWave         = null;
+		currentWave         = map.getCreatureWave(indexCurrentWave);
 		coeffSpeed          = 1.0;
 
 		// initialize default values
@@ -279,6 +279,8 @@ public abstract class Game implements PlayerState, CreatureState, WaveState
 		nextWave();
 
 		creatureManager.launchWave(currentWave, player, team, this, this);
+		
+		currentWave = map.getCreatureWave(indexCurrentWave);
 	}
 	
 	// Launch wave
@@ -646,7 +648,7 @@ public abstract class Game implements PlayerState, CreatureState, WaveState
 	// move onto next wave
 	public void nextWave()
 	{
-		++indexCurrentWave;
+		indexCurrentWave++;
 	}
 
 	// destroy

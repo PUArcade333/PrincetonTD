@@ -59,6 +59,7 @@ public class TowerElectric extends Tower {
 
 	@Override
 	protected void attack(Creature creature) {
+		creature.damaged(damage, owner);
 		game.addAnimation(new Electricity(game,this,creature,damage));
 	}
 

@@ -3,7 +3,7 @@ package creatures;
 
 public class Pigeon extends Creature {
 
-	private static final String IMAGE = "drawawble/pigeon";
+	private static final String IMAGE = "drawable/pigeon";
 
 	public Pigeon(long healthMax, int reward, double speed)
 	{

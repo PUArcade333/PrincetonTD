@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.Scroller;
 
@@ -31,6 +32,7 @@ OnTouchListener, SurfaceHolder.Callback {
 	 *  Will communicate to View through use of Handlers
 	 */
 	private GameThread gameThread;
+	
 
 	public GameBoardView(Context context)  {
 		super(context);
@@ -145,6 +147,38 @@ OnTouchListener, SurfaceHolder.Callback {
 
 	public SurfaceHolder getSurfaceHolder() {
 		return surfaceHolder;
+	}
+
+	public int getScore() {
+		if (gameThread != null)
+			return gameThread.getScore();
+		else
+			return 0;
+	}
+	public String getWave() {
+		if (gameThread != null)
+			return gameThread.getWave();
+		else
+			return null;
+	}
+	public int getLives() {
+		if (gameThread != null)
+			return gameThread.getLives();
+		else
+			return 0;
+	}
+	public int getGold() {
+		if (gameThread != null)
+			return gameThread.getGold();
+		else
+			return 0;
+	}
+	
+	
+	public void finish()
+	{
+		if (gameThread != null)
+			gameThread.setRunning(false);
 	}
 
 }

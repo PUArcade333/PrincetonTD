@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class PrincetonTD extends Activity implements OnClickListener {
 	
@@ -36,11 +37,22 @@ public class PrincetonTD extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		if (arg0.getId() == R.id.solo) {
 			Intent newGame = new Intent(this, GameSoloActivity.class);
-            startActivity(newGame);
+            startActivityForResult(newGame, 0);
 		}
 		else if (arg0.getId() == R.id.multi) {
 			// not implemented
 			finish();
 		}
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+            	TextView score = (TextView)findViewById(R.id.score);
+            	score.setText(data.getStringExtra("SCORE"));
+            }
+        }
+    }
+
 }

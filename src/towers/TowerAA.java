@@ -59,6 +59,7 @@ public class TowerAA extends Tower {
 
 	@Override
 	protected void attack(Creature creature) {
+		creature.damaged(damage, owner);
 		game.addAnimation(new Arrow(game,this,creature,damage));
 	}
 

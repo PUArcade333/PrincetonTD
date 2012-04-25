@@ -35,6 +35,7 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.widget.TextView;
 import android.widget.ImageButton;
 import android.widget.Scroller;
 import animations.Animation;
@@ -71,6 +72,7 @@ public class GameThread extends Thread implements GameState {
 
 	private Tower activeTower;
 	private Enumeration<Creature> eCreatures;
+	
 
 	public GameThread(SurfaceHolder surfaceHolder, final int w, final int h, Context context) {
 
@@ -101,7 +103,8 @@ public class GameThread extends Thread implements GameState {
 		game.setMainPlayer(player);
 		game.initialize();
 
-		//----------------
+		//-------------------------
+		// Scrolling
 
 		mScroller = new Scroller(context);
 		mGD = new GestureDetector(context,
@@ -139,6 +142,7 @@ public class GameThread extends Thread implements GameState {
 			}
 		});
 		
+		//------------------------------
 		// Get tower bitmaps
 		towerBM = new Bitmap[TowerType.getN()];
 		for (int i = 0; i < towerBM.length; i++)
@@ -154,12 +158,10 @@ public class GameThread extends Thread implements GameState {
 
 	public void acceleratorShaken() {
 		game.launchNewWave(player, team);
-		activeCreatureBM = StringResources.toBitmap(context, game.getWave().getCopy().getImage());
 	}
 
 	public boolean doOnKeyDown(int keyCode, KeyEvent event) {
 		game.launchNewWave(player, team);
-		activeCreatureBM = StringResources.toBitmap(context, game.getWave().getCopy().getImage());
 		return true;
 	}
 
@@ -354,7 +356,8 @@ public class GameThread extends Thread implements GameState {
 
 		// tx.setRotate((float)(creature.getAngle()+Math.PI/2),(float)creature.width()/2,(float)creature.height()/2);
 		// tx.preTranslate((float)(xOrigin+creature.x()), (float)(yOrigin+creature.y()));
-
+		
+		activeCreatureBM = StringResources.toBitmap(context, creature.getImage());
 		canvas.drawBitmap(activeCreatureBM,xOrigin+creature.x(),yOrigin+creature.y(),null);
 	}
 
@@ -378,6 +381,23 @@ public class GameThread extends Thread implements GameState {
 
 	private void drawTower(Tower tower, Canvas canvas) {
 		canvas.drawBitmap(towerBM[TowerType.getTowerType(tower)-1],xOrigin+tower.x(),yOrigin+tower.y(),null);
+	}
+	
+	public int getScore()
+	{
+		return player.getScore();
+	}
+	public String getWave()
+	{
+		return game.getWave().toString();
+	}
+	public int getLives()
+	{
+		return player.getTeam().getLives();
+	}
+	public int getGold()
+	{
+		return (int) player.getGold();
 	}
 
 	public void initialize() {
