@@ -54,7 +54,7 @@ public class PrincetonTD extends Activity implements OnClickListener {
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				TextView scoreText = (TextView)findViewById(R.id.score);
-				scoreText.setText(data.getIntExtra("SCORE",0));
+				scoreText.setText("" + data.getIntExtra("SCORE",0));
 			}
 		}
 	}

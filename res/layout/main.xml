@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <cos333.Project.GameBoardView
+    <puArcade.princetonTD.main.GameBoardView
         android:id="@+id/surfaceView1"
         android:layout_width="450dp"
         android:layout_height="280dp" >
-    </cos333.Project.GameBoardView>
+    </puArcade.princetonTD.main.GameBoardView>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
