@@ -102,7 +102,7 @@ public class GameSoloActivity extends Activity implements OnClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
 	    	Intent resultIntent = new Intent();
-			resultIntent.putExtra("SCORE", "" +  gbv.getScore());
+			resultIntent.putExtra("SCORE", gbv.getScore());
 			setResult(Activity.RESULT_OK, resultIntent);
 			gbv.finish();
 			finish();

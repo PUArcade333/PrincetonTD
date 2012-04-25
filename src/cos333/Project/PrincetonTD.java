@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class PrincetonTD extends Activity implements OnClickListener {
+	
+	private int score = 0;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +52,22 @@ public class PrincetonTD extends Activity implements OnClickListener {
             Intent data) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-            	TextView score = (TextView)findViewById(R.id.score);
-            	score.setText(data.getStringExtra("SCORE"));
+            	TextView scoreText = (TextView)findViewById(R.id.score);
+            	scoreText.setText(data.getIntExtra("SCORE",0));
             }
         }
     }
+	
+	// to send score back to linker
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	Intent resultIntent = new Intent();
+			resultIntent.putExtra("SCORE", score);
+			setResult(Activity.RESULT_OK, resultIntent);
+			finish();
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
 
 }
