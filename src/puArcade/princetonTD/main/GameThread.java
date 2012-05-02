@@ -71,6 +71,7 @@ public class GameThread extends Thread implements GameState {
 	private Player player;
 
 	private Tower activeTower;
+	private Tower selectTower;
 	private Enumeration<Creature> eCreatures;
 	
 
@@ -154,10 +155,7 @@ public class GameThread extends Thread implements GameState {
 	public void setActiveTower(Tower tower)
 	{
 		activeTower = tower;
-	}
-
-	public void acceleratorShaken() {
-		game.launchNewWave(player, team);
+		selectTower = null;
 	}
 
 	public boolean doOnKeyDown(int keyCode, KeyEvent event) {
@@ -167,7 +165,7 @@ public class GameThread extends Thread implements GameState {
 
 	public void onTouch(MotionEvent event) {
 		mGD.onTouchEvent(event);
-
+		
 		if (activeTower != null)
 		{
 			int xTouch = (int)event.getX() - activeTower.width()/2;
@@ -180,6 +178,7 @@ public class GameThread extends Thread implements GameState {
 					activeTower.setY(yTouch-yOrigin);
 					activeTower.setOwner(player);
 					game.addTower(activeTower);
+					selectTower = activeTower;
 					activeTower = null;
 				}
 				catch (NoMoneyException e)
@@ -196,6 +195,32 @@ public class GameThread extends Thread implements GameState {
 				}
 			}
 		}
+		else
+		{
+			// select closest tower
+			for(Tower tower : game.getTowers())
+			{
+				if (selectTower == null)
+				{
+					selectTower = tower;
+				}
+				else
+				{
+					int xTouch = (int)event.getX() - selectTower.width()/2;
+					int yTouch = (int)event.getY() - selectTower.height()/2;
+					int oldDist = dist2(xTouch,yTouch,selectTower.x(),selectTower.y());
+					int newDist = dist2(xTouch,yTouch,tower.x(),tower.y());
+					if (newDist < oldDist)
+					{
+						selectTower = tower;
+					}
+				}
+			}
+		}
+	}
+
+	private int dist2(int x1, int y1, int x2, int y2) {
+		return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
 	}
 
 	public void setRunning(boolean b) {
@@ -232,6 +257,13 @@ public class GameThread extends Thread implements GameState {
 		// background
 		canvas.drawColor(Color.BLACK);
 		canvas.drawBitmap(mapBM,xOrigin,yOrigin,null);
+		
+		
+		// draw tower range
+		if (selectTower != null)
+		{
+			//
+		}
 
 
 		// animations
@@ -258,6 +290,7 @@ public class GameThread extends Thread implements GameState {
 
 		for(Tower tower : game.getTowers())
 			drawTower(tower,canvas);
+		
 
 
 		// draw creatures
@@ -271,9 +304,6 @@ public class GameThread extends Thread implements GameState {
 		}
 
 
-		//		traitTmp = g2.getStroke();
-		//
-		//		
 		//		// selected tower
 		//		
 		//		if(towerSelectionnee != null)
@@ -289,12 +319,6 @@ public class GameThread extends Thread implements GameState {
 		//
 		//		g2.setStroke(traitTmp);
 		//
-		//		
-		//		// tower ranges
-		//		
-		//		if(afficherRayonsDePortee)
-		//			for(Tower tower : game.getTowers())
-		//				drawRange(tower,g2,COULEUR_RAYON_PORTEE);
 		//
 		//		// animations
 		//		game.drawAnimations(g2, Animation.HEIGHT_AIR);

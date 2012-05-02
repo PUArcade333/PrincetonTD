@@ -33,7 +33,7 @@ OnTouchListener, SurfaceHolder.Callback {
 	 *  Will communicate to View through use of Handlers
 	 */
 	private GameThread gameThread;
-	
+
 
 	public GameBoardView(Context context)  {
 		super(context);
@@ -112,13 +112,12 @@ OnTouchListener, SurfaceHolder.Callback {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+		if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER){
 			return gameThread.doOnKeyDown(keyCode, event);
 		}
 		else{
 			return super.onKeyDown(keyCode, event);
 		}
-
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -128,10 +127,6 @@ OnTouchListener, SurfaceHolder.Callback {
 	public void surfaceCreated(SurfaceHolder holder) {
 		gameThread.setRunning(true);
 		gameThread.start();
-	}
-
-	public void accelertatorShaken() {
-		gameThread.acceleratorShaken();
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -174,8 +169,8 @@ OnTouchListener, SurfaceHolder.Callback {
 		else
 			return 0;
 	}
-	
-	
+
+
 	public void finish()
 	{
 		if (gameThread != null)
